@@ -7,10 +7,13 @@ FILE_PATH = ROOT_DIR / "data" / "expenses_sample.csv"
 expenses = []
 
 def save():
+    """Saves the current list of expenses to a CSV file."""
     with open(FILE_PATH, "w") as f:
         f.writelines(expenses)
 
+
 def load():
+    """Loads expenses from a CSV file into the expenses list."""
     try:
         with open(FILE_PATH, 'r') as file:
             # .read().splitlines() splits lines cleanly and strips away hidden \r or \n tokens
@@ -35,12 +38,13 @@ def load():
         print(f"--- Error: System cannot find the file at {FILE_PATH} ---")
 
 def show_full():
-    
+    """Displays all expenses in the list."""
     for expense in expenses:
         print(expense)
     
 
 def show_summary():
+    """Displays a summary of the expenses."""
     summary = {}
     min_amount = 100000
     max_amount = -100000
@@ -62,13 +66,12 @@ def show_summary():
     print(f"Average amount: {avg_amount}")
 
 def add(date:str, category:str, amount:float, description:str):
+    """"Adds a new expense to the list."""
     expenses.append(f'{date},{category},{amount},{description}\n')
     
 
 def main():
-    # response = input('Enter what you would like to do \n type 1 for adding bill' \
-    # '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for load \n type 6 to quit \n')
-    while response != '6':
+    while True:
         response = input('Enter what you would like to do \n type 1 for adding bill' \
      '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for load \n type 6 to quit \n')
         if response == '1':
