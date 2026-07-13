@@ -11,29 +11,28 @@ def save():
         f.writelines(expenses)
 
 def load():
-    def load():
-        try:
-            with open(FILE_PATH, 'r') as file:
-                # .read().splitlines() splits lines cleanly and strips away hidden \r or \n tokens
-                lines = file.read().splitlines() 
+    try:
+        with open(FILE_PATH, 'r') as file:
+            # .read().splitlines() splits lines cleanly and strips away hidden \r or \n tokens
+            lines = file.read().splitlines() 
+            
+            if not lines:
+                print("--- File is completely empty ---")
+                return
                 
-                if not lines:
-                    print("--- File is completely empty ---")
-                    return
+            # Clear previous data so you don't double your list if you press 5 twice
+            expenses.clear() 
+            
+            # Use a manual slice to skip the first header line safely
+            # lines[1:] means "start at index 1 and go to the end"
+            for line in lines[1:]:
+                if line.strip():  # Skip empty rows
+                    expenses.append(line + '\n') # Re-add newline for consistency with show_full()
                     
-                # Clear previous data so you don't double your list if you press 5 twice
-                expenses.clear() 
-                
-                # Use a manual slice to skip the first header line safely
-                # lines[1:] means "start at index 1 and go to the end"
-                for line in lines[1:]:
-                    if line.strip():  # Skip empty rows
-                        expenses.append(line + '\n') # Re-add newline for consistency with show_full()
-                        
-                print(f"--- Successfully loaded {len(expenses)} rows of data! ---")
-                
-        except FileNotFoundError:
-            print(f"--- Error: System cannot find the file at {FILE_PATH} ---")
+            print(f"--- Successfully loaded {len(expenses)} rows of data! ---")
+            
+    except FileNotFoundError:
+        print(f"--- Error: System cannot find the file at {FILE_PATH} ---")
 
 def show_full():
     
@@ -67,9 +66,11 @@ def add(date:str, category:str, amount:float, description:str):
     
 
 def main():
-    response = input('Enter what you would like to do \n type 1 for adding bill' \
-    '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for load \n type 6 to quit \n')
+    # response = input('Enter what you would like to do \n type 1 for adding bill' \
+    # '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for load \n type 6 to quit \n')
     while response != '6':
+        response = input('Enter what you would like to do \n type 1 for adding bill' \
+     '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for load \n type 6 to quit \n')
         if response == '1':
             date = input('Enter the date of the bill (YYYY-MM-DD): ')
             category = input('Enter the category of the bill: ')
@@ -87,8 +88,10 @@ def main():
             
         elif response == '5':
             load()
-            
-        
+              # Skip the rest of the loop and prompt for input again
+        elif response == '6':
+            print('Exiting the program.')
+            break
         else:
             print('Invalid option. Please try again.')
         
