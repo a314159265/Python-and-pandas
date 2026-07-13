@@ -36,10 +36,24 @@ def add(date:str, category:str, amount:float, description:str):
     
 
 def main():
-    load()
-    show_summary()
-    add("2023-10-01", "Food", 50.0, "Grocery shopping")
-    save()
-    show_summary()
+    response = input('Enter what you would like to do \n type 1 for adding bill' \
+    '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for quit \n')
+    while response != '5':
+        if response == '1':
+            date = input('Enter the date of the bill (YYYY-MM-DD): ')
+            category = input('Enter the category of the bill: ')
+            amount = float(input('Enter the amount of the bill: '))
+            description = input('Enter a description for the bill: ')
+            add(date, category, amount, description)
+        elif response == '2':
+            show_full()
+        elif response == '3':
+            show_summary()
+        elif response == '4':
+            save()
+        else:
+            print('Invalid option. Please try again.')
+        
+        response = input('Enter what you would like to do \n type 1 for adding bill')
 
 main()
