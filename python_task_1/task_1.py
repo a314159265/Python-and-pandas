@@ -46,8 +46,8 @@ def show_full():
 def show_summary():
     """Displays a summary of the expenses."""
     summary = {}
-    min_amount = 100000
-    max_amount = -100000
+    min_amount = None
+    max_amount = None
     no_expenses = len(expenses)
     for expense in expenses:
         date, category, amount,  description = expense.strip().split(',')
