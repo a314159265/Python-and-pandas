@@ -19,7 +19,7 @@ def question_2(df: pd.DataFrame) -> None:
     """adds size column to indicate wether revenue is large/med/small"""
     df['is_large'] = df['revenue'].apply(lambda x: 'is_large' if x>100 else ('medium' if x>50 else 'small'))
 
-def question_3(df: pd.DataFrame) -> None:
+def question_3(df: pd.DataFrame) -> pd.DataFrame:
     """sorts by the revenue and date in decesending order"""
     return(df.sort_values(['revenue', 'order_date'], ascending=False))
 
