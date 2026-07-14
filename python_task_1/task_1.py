@@ -76,11 +76,20 @@ def main():
         response = input('Enter what you would like to do \n type 1 for adding bill' \
      '\n type 2 for showing all bills \n type 3 for showing summary \n type 4 for save \n type 5 for load \n type 6 to quit \n')
         if response == '1':
-            date = input('Enter the date of the bill (YYYY-MM-DD): ')
+            year,month,day = input('Enter the date of the bill (YYYY,MM,DD): ').split(',')
+            if int(year) > 2026:
+                print('not valid year')
+                continue
+            if int(month)>12:
+                print('not valid month')
+                continue
+            if int(day)>31:
+                print('not valid day') 
+                continue        
             category = input('Enter the category of the bill: ')
             amount = float(input('Enter the amount of the bill: '))
-            if(amount < 0):
-                print('Amount cannot be negative. Please try again.')
+            if(amount <= 0):
+                print('Amount cannot be negative or zero. Please try again.')
                 continue
             description = input('Enter a description for the bill: ')
             add(date, category, amount, description)
