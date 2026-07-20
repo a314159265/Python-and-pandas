@@ -1,22 +1,30 @@
 from pathlib import Path
 from datetime import datetime
+from datetime import date
 
 ROOT_DIR = Path(__file__).resolve().parent
 FILE_PATH = ROOT_DIR / "data" / "expenses_sample.csv"
 
 expenses = []
 
-class DateError(Exception):
-    """raised when date has error"""
 
-def is_valid_date(date_text: str, date_format: str = "%Y-%m-%d") -> bool:
+class DateError(Exception):
+    """Raised when a date has an error."""
+
+
+def is_valid_date(date_text: str) -> bool:
     """Checks if a string matches the given format and is a valid real-world date."""
+    date_format = "%Y-%m-%d"
     try:
-        datetime.strptime(date_text, date_format)
+        parsed_datetime = datetime.strptime(date_text, date_format)
+        parsed_date = parsed_datetime.date()
+        if parsed_date > date.today():
+            print("date can't be in future")
+            return False
         return True
     except ValueError:
         return False
-                
+
 
 def save():
     """Saves the current list of expenses to a CSV file."""
@@ -74,7 +82,7 @@ def show_summary():
             min_amount = amount
         if amount > max_amount:
             max_amount = amount
-        
+
     if no_expenses > 0:
         avg_amount = sum(summary.values()) / no_expenses
 
@@ -86,7 +94,10 @@ def show_summary():
 
 def add(date: str, category: str, amount: float, description: str):
     """Adds a new expense to the list."""
-    expenses.append(f"{date},{category},{amount},{description}\n")
+    if is_valid_date(date):
+        expenses.append(f"{date},{category},{amount},{description}\n")
+    else:
+        print('please enter vaild date')
 
 
 def main():
@@ -104,12 +115,10 @@ def main():
 
         if response == "1":
             user_date = input("Enter the date of the bill (YYYY-MM-DD): ")
-            year, month, day = user_date.split("-")
-            try:
-                # valid_date(year,month,day)
+            if is_valid_date(user_date):
                 pass
-            except:
-                print("try again")
+            else:
+                print('not valid date, please try again')
                 continue
             category = input("Enter the category of the bill: ")
             amount = float(input("Enter the amount of the bill: "))
@@ -119,9 +128,7 @@ def main():
                 continue
 
             description = input("Enter a description for the bill: ")
-            # Construct standard date string out of year, month, day
-            date_str = f"{year}-{month}-{day}"
-            add(date_str, category, amount, description)
+            add(user_date, category, amount, description)
 
         elif response == "2":
             show_full()
